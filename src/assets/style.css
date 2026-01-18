@@ -40,19 +40,20 @@
   border-radius: 5px;
 }
 
-.portfolio-categories_ , .devshark-style-container{
-	display: flex ;
-	flex-wrap: wrap ;
-	gap: 0.5% ;
-	justify-content: space-between;
+.portfolio-categories_,
+.devshark-style-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5%;
+  justify-content: space-between;
 }
 
-.category-checkbox , .devshark-style-wrap {
-	background: #fff ;
-	padding: 8px ; 
-	border-radius: 5px ;
-	width: 46% ;
-	display: block ;
-	margin-bottom: 10px ;
+.category-checkbox,
+.devshark-style-wrap {
+  background: #fff;
+  padding: 8px;
+  border-radius: 5px;
+  width: 46%;
+  display: block;
+  margin-bottom: 10px;
 }
-
