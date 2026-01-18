@@ -1,0 +1,243 @@
+.devshark-frontend-portfolio-list{
+	display: flex ;
+	flex-wrap: wrap ;
+	gap: 2%
+}
+
+/* Loading skeleton for post item */
+.devshark-post-item {
+    width: 31%;
+    border-radius: 15px;
+    display: flex;
+    height: 400px;
+    padding: 15px;
+	margin-bottom: 15px ;
+    align-content: flex-end; /* Changed from 'end' */
+    flex-wrap: wrap;
+    box-sizing: border-box; /* Important for proper width calculation */
+	position: relative ;
+	text-decoration: none !Important ;
+	overflow: hidden ;
+}
+.devshark-post-thumbnail{
+	position: absolute ;
+	display: block ;
+	background-size: cover ;
+	top: 0 ; 
+	left: 0 ;
+	width: 100% ;
+	height: 100% !important;
+    object-fit: cover !important;
+	z-index: 1 ;
+	transition: 500ms ;
+}
+.devshark-post-item:hover .devshark-post-thumbnail{
+	transform: scale(1.1);
+}
+/* Loading skeleton for title */
+.devshark-post-title {
+    width: 100%;
+    font-size: 20px ;
+	position: relative ;
+	z-index: 100 ;
+	margin-bottom: 3px !Important;
+	color: #fff ;
+	text-align: center ;
+}
+
+/* Loading skeleton for excerpt */
+.devshark-post-excerpt{
+    width: 100%;
+	position: relative ;
+	z-index: 100 ;
+	color: #fff ;
+	margin-bottom: 0 !Important ;
+	text-align: center ;
+}
+
+.devshark-post-overly{
+	position: absolute ;
+	height: 100% ; 
+	width: 100% ; 
+	top: 0 ; 
+	left: 0 ; 
+	z-index: 2 ;
+	background: #000000;
+	background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 50%);
+}
+
+/* Loading skeleton for post item */
+.devshark-post-item.loading {
+
+    background: #dfe6e9;
+    border-radius: 15px;
+
+}
+
+/* Loading skeleton for title */
+.devshark-post-title.loading {
+
+    height: 25px;
+    background: #ecf0f1;
+    border-radius: 15px;
+
+}
+.devshark_portfolio_categories , .devshark_post_pagination{
+	display: flex ; 
+	justify-content: center ;
+	gap: 10px ;
+	margin-bottom: 15px ;
+	position: relative ;
+	transition: 0.6s ; 
+}
+
+.devshark_portfolio_categories button , .devshark_post_pagination button{
+	background: #ffffff00 ;
+	color: #000  ; 
+	border: 2px solid #f1c40f ;
+	padding: 10px ; 
+	border-radius: 20px ; 
+	transition: 0.4s ; 
+	font-family: poppins;
+}
+
+.devshark_portfolio_categories button:hover , .devshark_portfolio_categories button.active , .devshark-pagination-item.active{
+	background: #f1c40f ;
+	border: 2px solid #00000000 ;
+}
+
+.devshark-pagination-wrap{
+	display: flex ;
+	position: absolute ;
+	opacity: 0 ;
+	visibility: hidden ;
+	gap: 10px ;
+	transition: 0.5s ; 
+	
+}
+.devshark-pagination-wrap.top{
+	
+	animation-name: bottomToCurrentPosition;
+  animation-duration: 0.5s;
+}
+.devshark-pagination-wrap.bottom{
+	
+	animation-name:  topToCurrentPosition;
+	animation-duration: 0.5s;
+}
+
+.devshark-pagination-wrap.currentToTop{
+	
+	animation-name: currentTopPosition;
+  animation-duration: 0.5s;
+}
+.devshark-pagination-wrap.currentTobottomPosition{
+	
+	animation-name:  currentTobottomPosition;
+	animation-duration: 0.5s;
+}
+
+/* The animation code */
+@keyframes currentTopPosition {
+  from {
+	 top: 0px ; 
+  }
+  to {
+	  top: -40px ; 
+  }
+}
+
+/* The animation code */
+@keyframes currentTobottomPosition {
+  from {
+	 bottom: 0px ; 
+  }
+  to {
+	  bottom: -40px ; 
+  }
+}/* The animation code */
+@keyframes topToCurrentPosition {
+  from {
+	 top: -40px ; 
+  }
+  to {
+	  top: 0px ; 
+  }
+}
+
+/* The animation code */
+@keyframes bottomToCurrentPosition {
+  from {
+	 bottom: -40px ; 
+  }
+  to {
+	  bottom: 0px ; 
+  }
+}
+.devshark-pagination-wrap.active{
+	display: flex ; 
+	justify-content: space-between ;
+	position: relative ;
+	opacity: 1 ;
+	visibility: visible ;
+	transition: 0.5s ; 
+}
+
+button.devshark-pagination-item{
+	width: 50px ; 
+	height: auto ;
+}
+button.devshark-data-prev ,  button.devshark-data-next{
+	background: #f1c40f ;
+	
+}
+
+
+/* Loading skeleton for excerpt */
+.devshark-post-excerpt.loading {
+    height: 35px;
+    background: #ecf0f1;
+    border-radius: 15px;
+}
+
+.devshark-notice {
+    padding: 10px;
+
+    border-radius: 20px;
+    font-family: poppins;
+	width: 250px ;
+	margin: 100px auto ;
+	background: #f1c40f ;
+ 
+	font-weight: 400 ; 
+	color: #ffffff ; 
+  }
+  .devshark-notice  h4{
+		font-weight: 400 ; 
+		color: #000000; 
+		font-size: 16px ;
+		margin-bottom: 0px ; 
+		text-align: center ;
+  }
+
+
+
+@media (max-width: 1080px){
+	.devshark-frontend-portfolio-list{
+		gap: 1% ;
+	}
+	.devshark-post-item{
+		width: 49% ;
+	}
+}
+
+@media (max-width: 768px){
+	.devshark-frontend-portfolio-list{
+		gap: 15px ;
+		/* padding: 10px ; */
+	}
+	.devshark-post-item{
+		width: 100% ;
+		height: 250px;
+	}
+}
