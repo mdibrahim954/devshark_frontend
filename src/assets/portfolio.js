@@ -337,6 +337,8 @@ jQuery(document).ready(
 			
 		}
 		
+		
+		
 		function handlePaginationWrapChange($btn , $totalPage , $container  , $showCount = 10 , animation){
 			let $wrap = $(".devshark-pagination-wrap")
 			// Data target string to number formate
