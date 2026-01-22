@@ -229,6 +229,7 @@ function filtered_posts_cat( $cats ) {
 */
 
 function devshark_frontend_portfolios (){
+     ob_start(); // Start output buffering
 	$html = '<div class="' . DEVSHARK_FRONTEND_PREFIX . '-portfolio-root" id="' . DEVSHARK_FRONTEND_PREFIX . '-portfolio-root" >';
 		// Header 
 		$html .='<div class="devshark_portfolio_categories" id="devshark_portfolio_categories" ></div>';
@@ -243,5 +244,6 @@ function devshark_frontend_portfolios (){
 	$html .= "</div>";
 	
 	echo $html;
+    return ob_get_clean(); // Return buffered content
 };
 add_shortcode( DEVSHARK_FRONTEND_PREFIX . "-portfolio-list" , "devshark_frontend_portfolios" );

@@ -2,6 +2,7 @@ jQuery(document).ready(function ($) {
   const $portfolioRootContainer = $(
     "#" + ajax_object.prefix + "-portfolio-list"
   );
+
   // fetch data from api
   function ajxPortfolioDataFromApi({
     pageNum,
@@ -20,14 +21,27 @@ jQuery(document).ready(function ($) {
         page_num: pageNum ?? 1,
         term_id: term_id ?? 0,
       },
+      beforeSend: function () {
+        console.log("Before send");
+      },
       success: function (response) {
         // console.log(response);
         if (response.success) {
+          $(".devshark_post_pagination").empty();
+          let $mainContainer = $(".devshark-frontend-portfolio-root");
+
           // console.log(response.data);
-          devsharkTotalPageNavigationHandler(
-            response.data.data["total-page"],
-            $(".devshark_post_pagination")
-          );
+          if (response.data.data["total-page"] >= 1) {
+            let $targedPage = Number($mainContainer.attr("data-target"));
+            devsharkTotalPageNavigationHandler(
+              response.data.data["total-page"],
+              $(".devshark_post_pagination"),
+              typeof $targedPage === "number" && $targedPage > 1
+                ? $targedPage
+                : 1
+            );
+          }
+
           return callBack(response);
         } else {
           // console.log(response.data.message);
@@ -94,18 +108,29 @@ jQuery(document).ready(function ($) {
   };
 
   // marge ajx request handler
-  function margeAjaxRequestHandler($pagenum = 1, term_id = 0) {
+  function margeAjaxRequestHandler($pagenum, term_id = 0) {
+    let $activeCat = $(".devshark-portfolio-categories.active");
+    let $activeCatVal = 0;
+    if ($activeCat && Number($activeCat.val()) > 0) {
+      $activeCatVal = Number($activeCat.val());
+    }
     ajxPortfolioDataFromApi({
-      pageNum: $pagenum,
+      pageNum: $pagenum && $pagenum > 1 ? $pagenum : 1,
       ajaxAction: ajax_object.prefix + "-portfolio_list",
-      term_id: term_id,
+      term_id: term_id > 0 ? term_id : $activeCatVal,
       callBack: function (res) {
         console.log(res);
         if (res.success) {
           const data = res.data.data;
           const post = data.posts;
-          const totalPages = data["total-page"];
-
+          let $paginatioItems = $(".devshark-pagination-item");
+          let checkPagedNumberHas =
+            typeof $pagenum === "number" && $pagenum >= 1 ? $pagenum : 1;
+          paginationItemClickHandler(
+            $paginatioItems,
+            $(".devshark-frontend-portfolio-root"),
+            $pagenum
+          );
           $.postGrid(post);
         } else {
           if ($portfolioRootContainer) {
@@ -119,7 +144,7 @@ jQuery(document).ready(function ($) {
     });
   }
 
-  margeAjaxRequestHandler();
+  margeAjaxRequestHandler(1);
   //alert("Hello")
 
   /**
@@ -210,7 +235,10 @@ jQuery(document).ready(function ($) {
     if ($totalPages <= 1) {
       return;
     }
-    $container.attr("data-target", target);
+    console.log("Total Pages: " + $totalPages);
+
+    let $mainContainer = $(".devshark-frontend-portfolio-root");
+    $mainContainer.attr("data-target", Number(target));
 
     let checkMultiplyTotalPageValue = parseFloat($totalPages / $showPages);
     let multifyTotalPage = parseInt($totalPages / $showPages);
@@ -263,12 +291,13 @@ jQuery(document).ready(function ($) {
     $html += '<button class="devshark-data-next" >Next</button>';
     $container.append($html);
 
-    let targetPages = Number($container.attr("data-target"));
+    let targetPages = Number($mainContainer.attr("data-target"));
     // console.log(targetPages);
+    // main container get ....
 
-    nextButtonHandler($totalPages, targetPages, $container);
-    prevButtonHandler($totalPages, targetPages, $container);
-    paginationItemClickHandler($(".devshark-pagination-item"), $container);
+    nextButtonHandler($totalPages, targetPages, $mainContainer);
+    prevButtonHandler($totalPages, targetPages, $mainContainer);
+    paginationItemClickHandler($(".devshark-pagination-item"), $mainContainer);
   }
 
   function nextButtonHandler(totalPages, targetPages, $container) {
@@ -304,7 +333,7 @@ jQuery(document).ready(function ($) {
         10,
         "top"
       );
-      margeAjaxRequestHandler(currentPage);
+      margeAjaxRequestHandler(nextPage);
     });
   }
 
@@ -340,7 +369,7 @@ jQuery(document).ready(function ($) {
         10,
         "bottom"
       );
-      margeAjaxRequestHandler(currentPage);
+      margeAjaxRequestHandler(prevPage);
     });
   }
 
@@ -393,13 +422,20 @@ jQuery(document).ready(function ($) {
       return;
     }
     $paginationItems.each(function (i, e) {
+      $(e).removeClass("active");
+      let $currentPage = Number($container.attr("data-target"));
+      $paginationItems.eq($currentPage - 1).addClass("active");
       $(e).on("click", function () {
-        $paginationItems.each(function (index, el) {
-          $(el).removeClass("active");
-        });
-        $(this).addClass("active");
+        /*$(this).addClass("active");*/
         let $currentElValue = $(this).val();
+
         $container.attr("data-target", $currentElValue);
+
+        let $termId = Number($(".devshark-portfolio-categories.active").val());
+        if ($termId > 0) {
+          margeAjaxRequestHandler($currentElValue, $termId);
+          return;
+        }
         margeAjaxRequestHandler($currentElValue);
       });
     });
