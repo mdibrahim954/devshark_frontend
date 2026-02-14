@@ -95,7 +95,8 @@ function devshark_frontend_enqueue_assets() {
     wp_localize_script(DEVSHARK_FRONTEND_PREFIX . "-portfolio-script", 'ajax_object', array(
         'ajax_url' => admin_url('admin-ajax.php'),
         'nonce'    => wp_create_nonce( DEVSHARK_FRONTEND_PREFIX . "-portfolio_list" ),
-		"prefix" => DEVSHARK_FRONTEND_PREFIX
+		"prefix" => DEVSHARK_FRONTEND_PREFIX,
+        "directoryUri" => plugin_dir_url( __FILE__ )
     ));
 }
 

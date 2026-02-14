@@ -1,7 +1,42 @@
+// Init constant
+
+const devshark_init = {};
+
 jQuery(document).ready(function ($) {
   const $portfolioRootContainer = $(
     "#" + ajax_object.prefix + "-portfolio-list"
   );
+  let counter = 0;
+
+  devshark_init.scrollCurrentPosition = (currentEl, callBack) => {
+    // 1. Use the element passed into the function (currentEl)
+    // 2. Ensure the element exists before getting the offset
+    if ($(currentEl).length) {
+      var offset = $(currentEl).offset();
+
+      // 3. Use .scrollTop() as a setter by passing the value
+      // Note: 'document' was misspelled and doesn't take "px" strings in this method
+      $("html, body").animate(
+        {
+          scrollTop: offset.top - 100,
+        },
+        500
+      ); // Optional: added a smooth scroll effect
+      return;
+    }
+
+    return callBack;
+  };
+
+  devshark_init.loader = function (currentEl) {
+    let $loader = "";
+    $loader += '<div class="devshark-preLoader" >';
+    $loader += `<img src="${ajax_object.directoryUri}assets/img/loader.webp" />`;
+    $loader += `<div class="dots">  <span></span>  <span></span>  <span></span></div>`;
+    $loader += "</div>";
+
+    $(currentEl).append($loader);
+  };
 
   // fetch data from api
   function ajxPortfolioDataFromApi({
@@ -23,13 +58,24 @@ jQuery(document).ready(function ($) {
       },
       beforeSend: function () {
         console.log("Before send");
+        let $root = $(".devshark-frontend-portfolio-root");
+        counter++;
+        if (term_id > 0 || pageNum > 1) {
+          devshark_init.scrollCurrentPosition($root, function () {
+            console.log("Root Element Not Found!");
+          });
+        }
+        if (counter > 1) {
+          devshark_init.loader($root);
+        }
       },
       success: function (response) {
         // console.log(response);
         if (response.success) {
           $(".devshark_post_pagination").empty();
           let $mainContainer = $(".devshark-frontend-portfolio-root");
-
+          // devshark_init.loader($mainContainer);
+          $(".devshark-preLoader").remove();
           // console.log(response.data);
           if (response.data.data["total-page"] >= 1) {
             let $targedPage = Number($mainContainer.attr("data-target"));
@@ -131,6 +177,7 @@ jQuery(document).ready(function ($) {
             $(".devshark-frontend-portfolio-root"),
             $pagenum
           );
+
           $.postGrid(post);
         } else {
           if ($portfolioRootContainer) {
@@ -222,6 +269,7 @@ jQuery(document).ready(function ($) {
         // Get term ID and trigger AJAX
         let term_id = $(this).val();
         margeAjaxRequestHandler(1, term_id);
+        // scrollCurrentPosition($(".devshark-frontend-portfolio-root"));
       });
     });
   }
@@ -437,6 +485,7 @@ jQuery(document).ready(function ($) {
           return;
         }
         margeAjaxRequestHandler($currentElValue);
+        // scrollCurrentPosition($(".devshark-frontend-portfolio-root"));
       });
     });
   }

@@ -214,6 +214,60 @@ button.devshark-data-next {
   text-align: center;
 }
 
+.devshark-preLoader {
+  position: fixed; /* Fixed stays relative to the viewport */
+  width: 250px;
+  padding: 25px;
+  background: #000000;
+  top: 50%;
+  left: 50%;
+  border-radius: 5px;
+  /* This line perfectly centers the element */
+  transform: translate(-50%, -50%);
+  z-index: 9999; /* Ensures it sits on top of everything else */
+}
+
+/* .devshark-preLoader .loading {
+  height: 10px;
+  width: 100%;
+  background: #fff;
+  margin-top: 10px;
+  border-radius: 10px;
+} */
+
+/* =====  Dots Bounce ===== */
+.devshark-frontend-portfolio-root {
+  position: relative;
+}
+.devshark-preLoader .dots {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.devshark-preLoader .dots span {
+  width: 14px;
+  height: 14px;
+  background: #ffffff;
+  border-radius: 50%;
+  animation: bounce 0.6s infinite alternate;
+}
+
+.devshark-preLoader .dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.devshark-preLoader .dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  100% {
+    transform: translateY(-14px);
+  }
+}
+
 @media (max-width: 1080px) {
   .devshark-frontend-portfolio-list {
     gap: 1%;
